@@ -85,12 +85,17 @@ function validateIngressRules(policy: FlatPolicy, relationships: PolicyRelations
 
   relationships.forEach(relationship => {
     if (relationship.policyName === name && relationship.namespace === namespace && relationship.direction === "Ingress") {
+      const relatedPodIP = relationship.relatedPod.split('/')[0];
+
       const matchingIngress = ingress?.some(ingressRule =>
         ingressRule.from?.some(fromRule =>
           (
-            fromRule.namespaceSelector?.matchLabels["kubernetes.io/metadata.name"] === relationship.relatedNamespace &&
-            (matchLabels(fromRule.podSelector?.matchLabels, { app: relationship.relatedPod }) ||
-             matchPodName(relationship.relatedPod, relationship.relatedPod)) 
+            // Check if the fromRule uses an ipBlock that matches the relatedPod IP
+            (fromRule.ipBlock && isIPInCIDR(relatedPodIP, fromRule.ipBlock.cidr)) ||
+            // Check if the namespaceSelector or podSelector matches
+            (fromRule.namespaceSelector?.matchLabels["kubernetes.io/metadata.name"] === relationship.relatedNamespace &&
+             (matchLabels(fromRule.podSelector?.matchLabels, { app: relatedPodIP }) ||
+              matchPodName(relatedPodIP, relatedPodIP)))
           )
         )
       );
@@ -117,13 +122,15 @@ function validateEgressRules(policy: FlatPolicy, relationships: PolicyRelationsh
 
   relationships.forEach(relationship => {
     if (relationship.policyName === name && relationship.namespace === namespace && relationship.direction === "Egress") {
+      const relatedPodIP = relationship.relatedPod.split('/')[0];
+
       const matchingEgress = egress?.some(egressRule =>
         egressRule.to?.some(toRule =>
-          (toRule.ipBlock && isIPInCIDR(relationship.relatedPod, toRule.ipBlock.cidr)) ||
+          (toRule.ipBlock && isIPInCIDR(relatedPodIP, toRule.ipBlock.cidr)) ||
           (
             toRule.namespaceSelector?.matchLabels["kubernetes.io/metadata.name"] === relationship.relatedNamespace &&
-            (matchLabels(toRule.podSelector?.matchLabels, { app: relationship.relatedPod }) ||
-             matchPodName(relationship.relatedPod, relationship.relatedPod)) 
+            (matchLabels(toRule.podSelector?.matchLabels, { app: relatedPodIP }) ||
+             matchPodName(relatedPodIP, relatedPodIP)) 
           )
         )
       );
