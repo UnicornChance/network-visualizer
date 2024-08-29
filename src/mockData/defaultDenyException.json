@@ -1,0 +1,157 @@
+{
+    "networkPolicies": [
+        {
+            "policy": {
+                "metadata": {
+                    "annotations": {
+                        "uds/description": "Default deny all"
+                    },
+                    "creationTimestamp": "2024-08-24T00:00:00.000Z",
+                    "generation": 1,
+                    "labels": {
+                        "uds/generation": "1",
+                        "uds/package": "security"
+                    },
+                    "name": "deny-all",
+                    "namespace": "security",
+                    "ownerReferences": [
+                        {
+                            "apiVersion": "uds.dev/v1alpha1",
+                            "kind": "Package",
+                            "name": "security",
+                            "uid": "g1h2i3j4-4567-8901-2345-ghijk5678901"
+                        }
+                    ],
+                    "resourceVersion": "3001",
+                    "uid": "723e4567-e89b-12d3-a456-426614174006"
+                },
+                "spec": {
+                    "podSelector": {},
+                    "policyTypes": [
+                        "Ingress",
+                        "Egress"
+                    ]
+                }
+            }
+        },
+        {
+            "policy": {
+                "metadata": {
+                    "annotations": {
+                        "uds/description": "Allow ingress from monitoring"
+                    },
+                    "creationTimestamp": "2024-08-24T00:00:00.000Z",
+                    "generation": 1,
+                    "labels": {
+                        "uds/generation": "1",
+                        "uds/package": "security"
+                    },
+                    "name": "allow-ingress-monitoring",
+                    "namespace": "security",
+                    "ownerReferences": [
+                        {
+                            "apiVersion": "uds.dev/v1alpha1",
+                            "kind": "Package",
+                            "name": "security",
+                            "uid": "g1h2i3j4-4567-8901-2345-ghijk5678901"
+                        }
+                    ],
+                    "resourceVersion": "3002",
+                    "uid": "823e4567-e89b-12d3-a456-426614174007"
+                },
+                "spec": {
+                    "ingress": [
+                        {
+                            "from": [
+                                {
+                                    "namespaceSelector": {
+                                        "matchLabels": {
+                                            "team": "monitoring"
+                                        }
+                                    },
+                                    "podSelector": {
+                                        "matchLabels": {
+                                            "app": "prometheus"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    ],
+                    "podSelector": {},
+                    "policyTypes": [
+                        "Ingress"
+                    ]
+                }
+            }
+        },
+        {
+            "policy": {
+                "metadata": {
+                    "annotations": {
+                        "uds/description": "Allow egress to logging service"
+                    },
+                    "creationTimestamp": "2024-08-24T00:00:00.000Z",
+                    "generation": 1,
+                    "labels": {
+                        "uds/generation": "1",
+                        "uds/package": "security"
+                    },
+                    "name": "allow-egress-logging-service",
+                    "namespace": "security",
+                    "ownerReferences": [
+                        {
+                            "apiVersion": "uds.dev/v1alpha1",
+                            "kind": "Package",
+                            "name": "security",
+                            "uid": "g1h2i3j4-4567-8901-2345-ghijk5678901"
+                        }
+                    ],
+                    "resourceVersion": "3003",
+                    "uid": "923e4567-e89b-12d3-a456-426614174008"
+                },
+                "spec": {
+                    "egress": [
+                        {
+                            "to": [
+                                {
+                                    "ipBlock": {
+                                        "cidr": "203.0.113.0/24"
+                                    }
+                                }
+                            ],
+                            "ports": [
+                                {
+                                    "port": 9200,
+                                    "protocol": "TCP"
+                                }
+                            ]
+                        }
+                    ],
+                    "podSelector": {},
+                    "policyTypes": [
+                        "Egress"
+                    ]
+                }
+            }
+        }
+    ],
+    "relationships": [
+        {
+            "policyName": "allow-ingress-monitoring",
+            "namespace": "security",
+            "podName": "",
+            "direction": "Ingress",
+            "relatedNamespace": "monitoring",
+            "relatedPod": "prometheus-monitor-1"
+        },
+        {
+            "policyName": "allow-egress-logging-service",
+            "namespace": "security",
+            "podName": "",
+            "direction": "Egress",
+            "relatedNamespace": "external",
+            "relatedPod": "203.0.113.5"
+        }
+    ]
+}

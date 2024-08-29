@@ -1,0 +1,104 @@
+{
+    "networkPolicies": [
+        {
+            "policy": {
+                "metadata": {
+                    "annotations": {
+                        "uds/description": "Overly permissive egress policy"
+                    },
+                    "creationTimestamp": "2024-08-24T00:00:00.000Z",
+                    "generation": 1,
+                    "labels": {
+                        "uds/generation": "1",
+                        "uds/package": "app"
+                    },
+                    "name": "allow-all-egress",
+                    "namespace": "app",
+                    "ownerReferences": [
+                        {
+                            "apiVersion": "uds.dev/v1alpha1",
+                            "kind": "Package",
+                            "name": "app",
+                            "uid": "d1e2f3g4-3456-7890-1234-defgh4567890"
+                        }
+                    ],
+                    "resourceVersion": "2003",
+                    "uid": "723e4567-e89b-12d3-a456-426614174006"
+                },
+                "spec": {
+                    "egress": [
+                        {
+                            "to": [
+                                {
+                                    "ipBlock": {
+                                        "cidr": "0.0.0.0/0"
+                                    }
+                                }
+                            ]
+                        }
+                    ],
+                    "podSelector": {},
+                    "policyTypes": [
+                        "Egress"
+                    ]
+                }
+            }
+        },
+        {
+            "policy": {
+                "metadata": {
+                    "annotations": {
+                        "uds/description": "Conflicting ingress policy"
+                    },
+                    "creationTimestamp": "2024-08-24T00:00:00.000Z",
+                    "generation": 1,
+                    "labels": {
+                        "uds/generation": "1",
+                        "uds/package": "app"
+                    },
+                    "name": "deny-ingress-from-all",
+                    "namespace": "app",
+                    "ownerReferences": [
+                        {
+                            "apiVersion": "uds.dev/v1alpha1",
+                            "kind": "Package",
+                            "name": "app",
+                            "uid": "d1e2f3g4-3456-7890-1234-defgh4567890"
+                        }
+                    ],
+                    "resourceVersion": "2004",
+                    "uid": "823e4567-e89b-12d3-a456-426614174007"
+                },
+                "spec": {
+                    "ingress": [
+                        {
+                            "from": []
+                        }
+                    ],
+                    "podSelector": {},
+                    "policyTypes": [
+                        "Ingress"
+                    ]
+                }
+            }
+        }
+    ],
+    "relationships": [
+        {
+            "policyName": "allow-all-egress",
+            "namespace": "app",
+            "podName": "",
+            "direction": "Egress",
+            "relatedNamespace": "external",
+            "relatedPod": "172.16.1.1"
+        },
+        {
+            "policyName": "deny-ingress-from-all",
+            "namespace": "app",
+            "podName": "",
+            "direction": "Ingress",
+            "relatedNamespace": "frontend",
+            "relatedPod": "frontend-app-1"
+        }
+    ]
+}

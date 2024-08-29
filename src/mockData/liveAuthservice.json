@@ -1,0 +1,417 @@
+{
+    "networkPolicies": [
+        {
+            "policy": {
+                "metadata": {
+                    "creationTimestamp": "2024-08-23T18:09:35.000Z",
+                    "generation": 1,
+                    "labels": {
+                        "uds/generation": "1",
+                        "uds/package": "authservice"
+                    },
+                    "name": "allow-authservice-egress-all-pods-intranamespace",
+                    "namespace": "authservice",
+                    "ownerReferences": [
+                        {
+                            "apiVersion": "uds.dev/v1alpha1",
+                            "kind": "Package",
+                            "name": "authservice",
+                            "uid": "a9a6a6ec-7434-4fd9-b0ee-1ecd174e5cd0"
+                        }
+                    ],
+                    "resourceVersion": "3573",
+                    "uid": "80fc3453-8cf5-4400-b5d4-3dbeaabfde88"
+                },
+                "spec": {
+                    "egress": [
+                        {
+                            "to": [
+                                {
+                                    "podSelector": {}
+                                }
+                            ]
+                        }
+                    ],
+                    "podSelector": {},
+                    "policyTypes": [
+                        "Egress"
+                    ]
+                }
+            }
+        },
+        {
+            "policy": {
+                "metadata": {
+                    "annotations": {
+                        "uds/description": "DNS lookup via CoreDNS"
+                    },
+                    "creationTimestamp": "2024-08-23T18:09:35.000Z",
+                    "generation": 1,
+                    "labels": {
+                        "uds/generation": "1",
+                        "uds/package": "authservice"
+                    },
+                    "name": "allow-authservice-egress-dns-lookup-via-coredns",
+                    "namespace": "authservice",
+                    "ownerReferences": [
+                        {
+                            "apiVersion": "uds.dev/v1alpha1",
+                            "kind": "Package",
+                            "name": "authservice",
+                            "uid": "a9a6a6ec-7434-4fd9-b0ee-1ecd174e5cd0"
+                        }
+                    ],
+                    "resourceVersion": "3566",
+                    "uid": "287dc105-33ee-412c-a914-a8bf5810a74c"
+                },
+                "spec": {
+                    "egress": [
+                        {
+                            "ports": [
+                                {
+                                    "port": 53,
+                                    "protocol": "UDP"
+                                }
+                            ],
+                            "to": [
+                                {
+                                    "namespaceSelector": {
+                                        "matchLabels": {
+                                            "kubernetes.io/metadata.name": "kube-system"
+                                        }
+                                    },
+                                    "podSelector": {
+                                        "matchLabels": {
+                                            "k8s-app": "kube-dns"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    ],
+                    "podSelector": {},
+                    "policyTypes": [
+                        "Egress"
+                    ]
+                }
+            }
+        },
+        {
+            "policy": {
+                "metadata": {
+                    "annotations": {
+                        "uds/description": "Istiod communication"
+                    },
+                    "creationTimestamp": "2024-08-23T18:09:35.000Z",
+                    "generation": 1,
+                    "labels": {
+                        "uds/generation": "1",
+                        "uds/package": "authservice"
+                    },
+                    "name": "allow-authservice-egress-istiod-communication",
+                    "namespace": "authservice",
+                    "ownerReferences": [
+                        {
+                            "apiVersion": "uds.dev/v1alpha1",
+                            "kind": "Package",
+                            "name": "authservice",
+                            "uid": "a9a6a6ec-7434-4fd9-b0ee-1ecd174e5cd0"
+                        }
+                    ],
+                    "resourceVersion": "3568",
+                    "uid": "aca7c239-744b-4ac5-83fa-ef42cdb4d41a"
+                },
+                "spec": {
+                    "egress": [
+                        {
+                            "ports": [
+                                {
+                                    "port": 15012,
+                                    "protocol": "TCP"
+                                }
+                            ],
+                            "to": [
+                                {
+                                    "namespaceSelector": {
+                                        "matchLabels": {
+                                            "kubernetes.io/metadata.name": "istio-system"
+                                        }
+                                    },
+                                    "podSelector": {
+                                        "matchLabels": {
+                                            "istio": "pilot"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    ],
+                    "podSelector": {},
+                    "policyTypes": [
+                        "Egress"
+                    ]
+                }
+            }
+        },
+        {
+            "policy": {
+                "metadata": {
+                    "annotations": {
+                        "uds/description": "SSO Provider & Redis Session Store"
+                    },
+                    "creationTimestamp": "2024-08-23T18:09:35.000Z",
+                    "generation": 1,
+                    "labels": {
+                        "uds/generation": "1",
+                        "uds/package": "authservice"
+                    },
+                    "name": "allow-authservice-egress-sso-provider-redis-session-store",
+                    "namespace": "authservice",
+                    "ownerReferences": [
+                        {
+                            "apiVersion": "uds.dev/v1alpha1",
+                            "kind": "Package",
+                            "name": "authservice",
+                            "uid": "a9a6a6ec-7434-4fd9-b0ee-1ecd174e5cd0"
+                        }
+                    ],
+                    "resourceVersion": "3574",
+                    "uid": "e7a3a000-ac83-44ce-9387-fe8a598adf5a"
+                },
+                "spec": {
+                    "egress": [
+                        {
+                            "to": [
+                                {
+                                    "ipBlock": {
+                                        "cidr": "0.0.0.0/0",
+                                        "except": [
+                                            "169.254.169.254/32"
+                                        ]
+                                    }
+                                }
+                            ]
+                        }
+                    ],
+                    "podSelector": {},
+                    "policyTypes": [
+                        "Egress"
+                    ]
+                }
+            }
+        },
+        {
+            "policy": {
+                "metadata": {
+                    "creationTimestamp": "2024-08-23T18:09:35.000Z",
+                    "generation": 1,
+                    "labels": {
+                        "uds/generation": "1",
+                        "uds/package": "authservice"
+                    },
+                    "name": "allow-authservice-ingress-all-pods-intranamespace",
+                    "namespace": "authservice",
+                    "ownerReferences": [
+                        {
+                            "apiVersion": "uds.dev/v1alpha1",
+                            "kind": "Package",
+                            "name": "authservice",
+                            "uid": "a9a6a6ec-7434-4fd9-b0ee-1ecd174e5cd0"
+                        }
+                    ],
+                    "resourceVersion": "3572",
+                    "uid": "3396f758-1021-401a-96a6-85085d120027"
+                },
+                "spec": {
+                    "ingress": [
+                        {
+                            "from": [
+                                {
+                                    "podSelector": {}
+                                }
+                            ]
+                        }
+                    ],
+                    "podSelector": {},
+                    "policyTypes": [
+                        "Ingress"
+                    ]
+                }
+            }
+        },
+        {
+            "policy": {
+                "metadata": {
+                    "annotations": {
+                        "uds/description": "Protected Apps"
+                    },
+                    "creationTimestamp": "2024-08-23T18:09:35.000Z",
+                    "generation": 1,
+                    "labels": {
+                        "uds/generation": "1",
+                        "uds/package": "authservice"
+                    },
+                    "name": "allow-authservice-ingress-protected-apps",
+                    "namespace": "authservice",
+                    "ownerReferences": [
+                        {
+                            "apiVersion": "uds.dev/v1alpha1",
+                            "kind": "Package",
+                            "name": "authservice",
+                            "uid": "a9a6a6ec-7434-4fd9-b0ee-1ecd174e5cd0"
+                        }
+                    ],
+                    "resourceVersion": "3575",
+                    "uid": "0ade35d0-3ba2-4e14-bd22-8d9822c84f7b"
+                },
+                "spec": {
+                    "ingress": [
+                        {
+                            "from": [
+                                {
+                                    "namespaceSelector": {}
+                                }
+                            ],
+                            "ports": [
+                                {
+                                    "port": 10003,
+                                    "protocol": "TCP"
+                                }
+                            ]
+                        }
+                    ],
+                    "podSelector": {
+                        "matchLabels": {
+                            "app.kubernetes.io/name": "authservice"
+                        }
+                    },
+                    "policyTypes": [
+                        "Ingress"
+                    ]
+                }
+            }
+        },
+        {
+            "policy": {
+                "metadata": {
+                    "annotations": {
+                        "uds/description": "Sidecar monitoring"
+                    },
+                    "creationTimestamp": "2024-08-23T18:09:35.000Z",
+                    "generation": 1,
+                    "labels": {
+                        "uds/generation": "1",
+                        "uds/package": "authservice"
+                    },
+                    "name": "allow-authservice-ingress-sidecar-monitoring",
+                    "namespace": "authservice",
+                    "ownerReferences": [
+                        {
+                            "apiVersion": "uds.dev/v1alpha1",
+                            "kind": "Package",
+                            "name": "authservice",
+                            "uid": "a9a6a6ec-7434-4fd9-b0ee-1ecd174e5cd0"
+                        }
+                    ],
+                    "resourceVersion": "3571",
+                    "uid": "511e1815-fa3d-4fae-869d-06bbdc61eeae"
+                },
+                "spec": {
+                    "ingress": [
+                        {
+                            "from": [
+                                {
+                                    "namespaceSelector": {
+                                        "matchLabels": {
+                                            "kubernetes.io/metadata.name": "monitoring"
+                                        }
+                                    },
+                                    "podSelector": {
+                                        "matchLabels": {
+                                            "app": "prometheus"
+                                        }
+                                    }
+                                }
+                            ],
+                            "ports": [
+                                {
+                                    "port": 15020,
+                                    "protocol": "TCP"
+                                }
+                            ]
+                        }
+                    ],
+                    "podSelector": {},
+                    "policyTypes": [
+                        "Ingress"
+                    ]
+                }
+            }
+        },
+        {
+            "policy": {
+                "metadata": {
+                    "creationTimestamp": "2024-08-23T18:09:35.000Z",
+                    "generation": 1,
+                    "labels": {
+                        "uds/generation": "1",
+                        "uds/package": "authservice"
+                    },
+                    "name": "deny-authservice-default",
+                    "namespace": "authservice",
+                    "ownerReferences": [
+                        {
+                            "apiVersion": "uds.dev/v1alpha1",
+                            "kind": "Package",
+                            "name": "authservice",
+                            "uid": "a9a6a6ec-7434-4fd9-b0ee-1ecd174e5cd0"
+                        }
+                    ],
+                    "resourceVersion": "3560",
+                    "uid": "22c2b8e2-ae14-4316-8a51-1f9bb886b615"
+                },
+                "spec": {
+                    "podSelector": {},
+                    "policyTypes": [
+                        "Ingress",
+                        "Egress"
+                    ]
+                }
+            }
+        }
+    ],
+    "relationships": [
+        {
+            "policyName": "allow-authservice-egress-dns-lookup-via-coredns",
+            "namespace": "authservice",
+            "podName": "",
+            "direction": "Egress",
+            "relatedNamespace": "kube-system",
+            "relatedPod": "coredns-85b6cc9bfb-c5grz"
+        },
+        {
+            "policyName": "allow-authservice-egress-istiod-communication",
+            "namespace": "authservice",
+            "podName": "",
+            "direction": "Egress",
+            "relatedNamespace": "istio-system",
+            "relatedPod": "istiod-84cf89cbcb-9xtjw"
+        },
+        {
+            "policyName": "allow-authservice-egress-sso-provider-redis-session-store",
+            "namespace": "authservice",
+            "podName": "",
+            "direction": "Egress",
+            "relatedNamespace": "external",
+            "relatedPod": "0.0.0.0/0"
+        },
+        {
+            "policyName": "allow-authservice-ingress-sidecar-monitoring",
+            "namespace": "authservice",
+            "podName": "",
+            "direction": "Ingress",
+            "relatedNamespace": "monitoring",
+            "relatedPod": "prometheus-kube-prometheus-stack-prometheus-0"
+        }
+    ]
+}

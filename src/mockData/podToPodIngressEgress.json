@@ -1,0 +1,248 @@
+{
+    "networkPolicies": [
+        {
+            "policy": {
+                "metadata": {
+                    "annotations": {
+                        "uds/description": "Egress to external service"
+                    },
+                    "creationTimestamp": "2024-08-24T00:00:00.000Z",
+                    "generation": 1,
+                    "labels": {
+                        "uds/generation": "1",
+                        "uds/package": "webapp"
+                    },
+                    "name": "allow-webapp-egress-external-service",
+                    "namespace": "webapp",
+                    "ownerReferences": [
+                        {
+                            "apiVersion": "uds.dev/v1alpha1",
+                            "kind": "Package",
+                            "name": "webapp",
+                            "uid": "a1b2c3d4-1234-5678-9101-abcdef123456"
+                        }
+                    ],
+                    "resourceVersion": "1001",
+                    "uid": "123e4567-e89b-12d3-a456-426614174000"
+                },
+                "spec": {
+                    "egress": [
+                        {
+                            "to": [
+                                {
+                                    "ipBlock": {
+                                        "cidr": "192.168.1.0/24"
+                                    }
+                                }
+                            ],
+                            "ports": [
+                                {
+                                    "port": 443,
+                                    "protocol": "TCP"
+                                }
+                            ]
+                        }
+                    ],
+                    "podSelector": {},
+                    "policyTypes": [
+                        "Egress"
+                    ]
+                }
+            }
+        },
+        {
+            "policy": {
+                "metadata": {
+                    "annotations": {
+                        "uds/description": "Ingress from monitoring"
+                    },
+                    "creationTimestamp": "2024-08-24T00:00:00.000Z",
+                    "generation": 1,
+                    "labels": {
+                        "uds/generation": "1",
+                        "uds/package": "webapp"
+                    },
+                    "name": "allow-webapp-ingress-monitoring",
+                    "namespace": "webapp",
+                    "ownerReferences": [
+                        {
+                            "apiVersion": "uds.dev/v1alpha1",
+                            "kind": "Package",
+                            "name": "webapp",
+                            "uid": "a1b2c3d4-1234-5678-9101-abcdef123456"
+                        }
+                    ],
+                    "resourceVersion": "1002",
+                    "uid": "223e4567-e89b-12d3-a456-426614174001"
+                },
+                "spec": {
+                    "ingress": [
+                        {
+                            "from": [
+                                {
+                                    "namespaceSelector": {
+                                        "matchLabels": {
+                                            "kubernetes.io/metadata.name": "monitoring"
+                                        }
+                                    },
+                                    "podSelector": {
+                                        "matchLabels": {
+                                            "app": "prometheus"
+                                        }
+                                    }
+                                }
+                            ],
+                            "ports": [
+                                {
+                                    "port": 9090,
+                                    "protocol": "TCP"
+                                }
+                            ]
+                        }
+                    ],
+                    "podSelector": {},
+                    "policyTypes": [
+                        "Ingress"
+                    ]
+                }
+            }
+        },
+        {
+            "policy": {
+                "metadata": {
+                    "annotations": {
+                        "uds/description": "Ingress from webapp"
+                    },
+                    "creationTimestamp": "2024-08-24T00:00:00.000Z",
+                    "generation": 1,
+                    "labels": {
+                        "uds/generation": "1",
+                        "uds/package": "backend"
+                    },
+                    "name": "allow-backend-ingress-webapp",
+                    "namespace": "backend",
+                    "ownerReferences": [
+                        {
+                            "apiVersion": "uds.dev/v1alpha1",
+                            "kind": "Package",
+                            "name": "backend",
+                            "uid": "b1c2d3e4-2345-6789-0123-bcdef2345678"
+                        }
+                    ],
+                    "resourceVersion": "1003",
+                    "uid": "323e4567-e89b-12d3-a456-426614174002"
+                },
+                "spec": {
+                    "ingress": [
+                        {
+                            "from": [
+                                {
+                                    "namespaceSelector": {
+                                        "matchLabels": {
+                                            "kubernetes.io/metadata.name": "webapp"
+                                        }
+                                    },
+                                    "podSelector": {}
+                                }
+                            ],
+                            "ports": [
+                                {
+                                    "port": 8080,
+                                    "protocol": "TCP"
+                                }
+                            ]
+                        }
+                    ],
+                    "podSelector": {},
+                    "policyTypes": [
+                        "Ingress"
+                    ]
+                }
+            }
+        },
+        {
+            "policy": {
+                "metadata": {
+                    "annotations": {
+                        "uds/description": "Egress to external database"
+                    },
+                    "creationTimestamp": "2024-08-24T00:00:00.000Z",
+                    "generation": 1,
+                    "labels": {
+                        "uds/generation": "1",
+                        "uds/package": "backend"
+                    },
+                    "name": "allow-backend-egress-external-db",
+                    "namespace": "backend",
+                    "ownerReferences": [
+                        {
+                            "apiVersion": "uds.dev/v1alpha1",
+                            "kind": "Package",
+                            "name": "backend",
+                            "uid": "b1c2d3e4-2345-6789-0123-bcdef2345678"
+                        }
+                    ],
+                    "resourceVersion": "1004",
+                    "uid": "423e4567-e89b-12d3-a456-426614174003"
+                },
+                "spec": {
+                    "egress": [
+                        {
+                            "to": [
+                                {
+                                    "ipBlock": {
+                                        "cidr": "10.10.0.0/16"
+                                    }
+                                }
+                            ],
+                            "ports": [
+                                {
+                                    "port": 5432,
+                                    "protocol": "TCP"
+                                }
+                            ]
+                        }
+                    ],
+                    "podSelector": {},
+                    "policyTypes": [
+                        "Egress"
+                    ]
+                }
+            }
+        }
+    ],
+    "relationships": [
+        {
+            "policyName": "allow-webapp-egress-external-service",
+            "namespace": "webapp",
+            "podName": "",
+            "direction": "Egress",
+            "relatedNamespace": "external",
+            "relatedPod": "192.168.1.1"
+        },
+        {
+            "policyName": "allow-webapp-ingress-monitoring",
+            "namespace": "webapp",
+            "podName": "",
+            "direction": "Ingress",
+            "relatedNamespace": "monitoring",
+            "relatedPod": "prometheus-server-1"
+        },
+        {
+            "policyName": "allow-backend-ingress-webapp",
+            "namespace": "backend",
+            "podName": "",
+            "direction": "Ingress",
+            "relatedNamespace": "webapp",
+            "relatedPod": "webapp-deployment-1"
+        },
+        {
+            "policyName": "allow-backend-egress-external-db",
+            "namespace": "backend",
+            "podName": "",
+            "direction": "Egress",
+            "relatedNamespace": "external",
+            "relatedPod": "10.10.1.1"
+        }
+    ]
+}

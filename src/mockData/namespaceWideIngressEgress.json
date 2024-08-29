@@ -1,0 +1,128 @@
+{
+    "networkPolicies": [
+        {
+            "policy": {
+                "metadata": {
+                    "annotations": {
+                        "uds/description": "Egress to multiple services"
+                    },
+                    "creationTimestamp": "2024-08-24T00:00:00.000Z",
+                    "generation": 1,
+                    "labels": {
+                        "uds/generation": "1",
+                        "uds/package": "app"
+                    },
+                    "name": "allow-app-egress-multiple-services",
+                    "namespace": "app",
+                    "ownerReferences": [
+                        {
+                            "apiVersion": "uds.dev/v1alpha1",
+                            "kind": "Package",
+                            "name": "app",
+                            "uid": "d1e2f3g4-3456-7890-1234-defgh4567890"
+                        }
+                    ],
+                    "resourceVersion": "2001",
+                    "uid": "523e4567-e89b-12d3-a456-426614174004"
+                },
+                "spec": {
+                    "egress": [
+                        {
+                            "to": [
+                                {
+                                    "ipBlock": {
+                                        "cidr": "172.16.0.0/12"
+                                    }
+                                },
+                                {
+                                    "namespaceSelector": {
+                                        "matchLabels": {
+                                            "team": "data-services"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    ],
+                    "podSelector": {},
+                    "policyTypes": [
+                        "Egress"
+                    ]
+                }
+            }
+        },
+        {
+            "policy": {
+                "metadata": {
+                    "annotations": {
+                        "uds/description": "Ingress from frontend namespace"
+                    },
+                    "creationTimestamp": "2024-08-24T00:00:00.000Z",
+                    "generation": 1,
+                    "labels": {
+                        "uds/generation": "1",
+                        "uds/package": "app"
+                    },
+                    "name": "allow-app-ingress-single-namespace",
+                    "namespace": "app",
+                    "ownerReferences": [
+                        {
+                            "apiVersion": "uds.dev/v1alpha1",
+                            "kind": "Package",
+                            "name": "app",
+                            "uid": "d1e2f3g4-3456-7890-1234-defgh4567890"
+                        }
+                    ],
+                    "resourceVersion": "2002",
+                    "uid": "623e4567-e89b-12d3-a456-426614174005"
+                },
+                "spec": {
+                    "ingress": [
+                        {
+                            "from": [
+                                {
+                                    "namespaceSelector": {
+                                        "matchLabels": {
+                                            "team": "frontend"
+                                        }
+                                    },
+                                    "podSelector": {}
+                                }
+                            ]
+                        }
+                    ],
+                    "podSelector": {},
+                    "policyTypes": [
+                        "Ingress"
+                    ]
+                }
+            }
+        }
+    ],
+    "relationships": [
+        {
+            "policyName": "allow-app-egress-multiple-services",
+            "namespace": "app",
+            "podName": "",
+            "direction": "Egress",
+            "relatedNamespace": "external",
+            "relatedPod": "172.16.1.1"
+        },
+        {
+            "policyName": "allow-app-egress-multiple-services",
+            "namespace": "app",
+            "podName": "",
+            "direction": "Egress",
+            "relatedNamespace": "data-services",
+            "relatedPod": "data-processor-1"
+        },
+        {
+            "policyName": "allow-app-ingress-single-namespace",
+            "namespace": "app",
+            "podName": "",
+            "direction": "Ingress",
+            "relatedNamespace": "frontend",
+            "relatedPod": "frontend-app-1"
+        }
+    ]
+}
