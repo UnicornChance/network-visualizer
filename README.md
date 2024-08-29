@@ -15,7 +15,7 @@ This project is a Svelte-based web application designed to visualize Kubernetes 
 - **D3.js** (v7.0 or later)
 - **TypeScript** (Optional but recommended for development)
 
-## Installation
+## Setup
 
 > [!WARNING]
 >  A k8s running cluster will be required for live data to be viewable
@@ -48,19 +48,17 @@ This project is a Svelte-based web application designed to visualize Kubernetes 
    ```bash
     npm install
    ```
-3. **Run the development server:**
+3. **Start Server and UI:**
    ```bash
-    npm run server
+    npm run start
    ```
-4. **Run UI:**
-   ```bash
-     npm run dev
-   ```
-5. **Build for production:**
+
+**Build for production:**
    ```bash
     npm run build
    ```
-6. **Preview the production build:**
+
+**Preview the production build:**
    ```bash
     npm run preview
    ```
